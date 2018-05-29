@@ -13,6 +13,4 @@ ________________________________________________________________________________
 
 
 
-INSTALL:
-
-    git clone https://github.com/petrexxy/Sclan.git
+    install: git clone https://github.com/petrexxy/Sclan.git
