@@ -14,13 +14,13 @@ try:
 	global args
 	parser = argparse.ArgumentParser(description='\033[01;31mLAN HOSTNAME SCANNER.\033[0m\n\n')
 	parser.add_argument("-i","--interface", help="\033[01;31mINTERFACE.\033[0m\n\n")
-	parser.add_argument("-d","--delay", help="\033[01;31mDELAY TIME BEFORE EACH SCAN.\033[0m\n\n")
+	parser.add_argument("-d","--delay", help="\033[01;31mDELAY TIME BEFORE EACH SCAN.\033[0m\n\n",required=True)
 	parser.add_argument("-p","--prefix", help="\033[01;31mNETWORK PREFIX.\033[0m\n\n",required=False)
 	args=vars(parser.parse_args())
 except:
     print("\n\n\033[01;31mUSAGE\033[01;37m: \033[01;37mpython \033[01;37m%s \033[01;31m[\033[01;37mINTERFACE\033[01;31m] [\033[01;37mPREFIX \033[01;31m(\033[01;37mOPTIONAL\033[01;31m)]\033[0m\n" %(sys.argv[0]) )
     print("\033[01;31mFOR MORE HELP, USE THE \033[01;37m -h \033[01;31m ARGUMENT.\n\n")
-    sys.exit()	
+    sys.exit()
 def log(msg):
     sys.stdout.write( "\033[01;32m[%s] \033[01;37m%s" %(str(dt.now())[11:19],str(msg)) )
 def processlog(msg):
@@ -30,8 +30,10 @@ def errlog(msg):
 global s
 s=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 try:
-    s.connect(('google.com',80))
-    log( "internet connection is up.\n".upper() )
+    #s.connect(('google.com',80))
+	a=([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1], [
+	[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) if l][0][0])
+	log( "internet connection is up.\n".upper() )
 except:
     errlog( "internet connection is down.\n".upper() )
     sys.exit()
@@ -48,10 +50,10 @@ def prefixer():
 				time.sleep(0.2)
 				print("\033[01;37m\n\n")
 				print("\033[01;05;37m{}\033[0m\033[01;02;37m".format(str(args['interface'])))
-				sys.stdout.write("\033[01;31m")
-				subprocess.check_call("ifconfig %s |grep inet"%(str(args['interface'])),shell=True)
+				sys.stdout.write("\nLOCAL IP: %s"%(a))
+				#subprocess.check_call("ifconfig %s |grep inet"%(str(args['interface'])),shell=True)
 				sys.stdout.write("\033[01;37m")
-				subprocess.check_call("ifconfig %s |grep ether"%(str(args['interface'])),shell=True)
+				#subprocess.check_call("ifconfig %s |grep ether"%(str(args['interface'])),shell=True)
 				print("\033[01;0m\n\n")
 				print("")
 				prefix=raw_input("\033[01;31m[\033[01;37m>\033[01;31m] \033[01;37mPREFIX\033[01;31m [\033[01;37m{}\033[01;31m]:\033[01;37m ".format(args['interface']))
@@ -76,7 +78,7 @@ def scanner():
 	os.system('clear')
 	print("\033[01;37mSCANNING\033[01;31m...\033[0m\n")
 	connected=[]
-	
+
 	#disconnected=[]
 	global start_time
 	global total_hosts
@@ -96,9 +98,12 @@ def scanner():
 			else:
 				details=("\r\033[01;37m%s.%s \033[01;31m => \033[01;03;37m%s"%(str(prefix),str(x),HOST[0]))
 			total_hosts=total_hosts+1
-			a=HOST[0].split('.')[0]
-			if a == platform.node():
-				details=details+("     \033[01;05;31m[\033[01;37mYOU\033[01;31m]\033[0m")
+			if args['prefix']:
+				if a == args['prefix']+"."+str(x):
+					details=details+("     \033[01;05;31m[\033[01;37mYOU\033[01;31m]\033[0m")
+			else:
+				if a == prefix+"."+str(x):
+					details=details+("     \033[01;05;31m[\033[01;37mYOU\033[01;31m]\033[0m")
 			connected.append(details)
 			print(details)
 		except:
@@ -110,7 +115,7 @@ def scanner():
 	stop_time=dt.now()
 	global total_time
 	total_time=stop_time-start_time
-	time.sleep(0.5)	
+	time.sleep(0.5)
 	sys.stdout.write("\033[0m")
 	print("")
 	log("\033[01;37mFINISHED.\n\n\n")
@@ -127,4 +132,3 @@ def main():
 	details()
 if __name__ == '__main__':
 	main()
-
