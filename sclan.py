@@ -14,9 +14,13 @@ try:
 	global args
 	parser = argparse.ArgumentParser(description='\033[01;31mLAN HOSTNAME SCANNER.\033[0m\n\n')
 	parser.add_argument("-i","--interface", help="\033[01;31mINTERFACE.\033[0m\n\n",required=True)
-	parser.add_argument("-d","--delay", help="\033[01;31mDELAY TIME BEFORE EACH SCAN.\033[0m\n\n",required=True)
+	parser.add_argument("-d","--delay", help="\033[01;31mDELAY TIME BEFORE EACH SCAN.\033[0m\n\n",required=False)
 	parser.add_argument("-p","--prefix", help="\033[01;31mNETWORK PREFIX.\033[0m\n\n",required=False)
 	args=vars(parser.parse_args())
+	if args['delay']:
+		args['delay']=args['delay']
+	else:
+		args['delay']=0.001
 except:
     print("\n\n\033[01;31mUSAGE\033[01;37m: \033[01;37mpython \033[01;37m%s \033[01;31m[\033[01;37mINTERFACE\033[01;31m] [\033[01;37mPREFIX \033[01;31m(\033[01;37mOPTIONAL\033[01;31m)]\033[0m\n" %(sys.argv[0]) )
     print("\033[01;31mFOR MORE HELP, USE THE \033[01;37m -h \033[01;31m ARGUMENT.\n\n")
