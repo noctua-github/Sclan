@@ -72,7 +72,7 @@ def scanner():
 	suffix=[]
 	time.sleep(1)
 	print("")
-	for i in range(255):
+	for i in range(256):
 		suffix.append(i)
 		sys.stdout.write("\r"+"\033[01;33m[%s] \033[01;37mSUFFIX\033[01;31m => \033[01;37m%s ADDED FOR SCANNING.    "%(str(dt.now())[11:19],str(i)))
 		sys.stdout.flush()
