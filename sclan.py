@@ -98,9 +98,9 @@ def scanner():
 			else:
 				HOST=socket.gethostbyaddr(str(prefix)+"."+str(x))
 			if args['prefix']:
-				details=("\r\033[01;37m%s.%s \033[01;31m => \033[01;03;37m%s"%(str(args['prefix']),str(x),HOST[0]))
+				details=("\r\033[01;37m{}.{:3s}\033[01;31m  =>  \033[01;03;37m{}\033[0m".format(str(args['prefix']),str(x),HOST[0]))
 			else:
-				details=("\r\033[01;37m%s.%s \033[01;31m => \033[01;03;37m%s"%(str(prefix),str(x),HOST[0]))
+				details=("\r\033[01;37m{}.{:3s}\033[01;31m  =>  \033[01;03;37m{}\033[0m".format(str(prefix),str(x),HOST[0]))
 			total_hosts=total_hosts+1
 			if args['prefix']:
 				if a == args['prefix']+"."+str(x):
