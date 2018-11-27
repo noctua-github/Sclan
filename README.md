@@ -14,4 +14,4 @@ ________________________________________________________________________________
 
 
 
-    install: git clone https://github.com/petrexxy/Sclan.git
+    install: git clone https://github.com/noctua-github/Sclan.git
