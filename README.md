@@ -14,4 +14,3 @@ ________________________________________________________________________________
 
 
 
-    install: git clone https://github.com/noctua-github/Sclan.git
